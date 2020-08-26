@@ -1,0 +1,72 @@
+C:\Users\hp>psql -U postgres -h localhost
+Password for user postgres:
+psql (12.3)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# create database db;
+CREATE DATABASE
+postgres=# \l
+                                         List of databases
+   Name    |  Owner   | Encoding |      Collate       |       Ctype        |   Access privileges
+-----------+----------+----------+--------------------+--------------------+-----------------------
+ Staffs    | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ db        | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ postgres  | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ template0 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+ template1 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+(5 rows)
+
+
+postgres=# create user kowshi with password 'designation'
+postgres-#  create user kowshi with password 'designation';
+ERROR:  syntax error at or near "create"
+LINE 2:  create user kowshi with password 'designation';
+         ^
+postgres=# create user kowshi with password 'designation';
+CREATE ROLE
+postgres=#  \c db;
+You are now connected to database "db" as user "postgres".
+db=#
+db=#
+db=#
+db=#
+db=#
+db=#
+db=# create schema home
+db-#
+db-#
+db-#
+db-#
+db-# create schema home;
+ERROR:  syntax error at or near "schema"
+LINE 2: create schema home;
+               ^
+db=# create schema home;
+CREATE SCHEMA
+db=# create table house.test(ceiling char(10),door char(10));
+ERROR:  schema "house" does not exist
+LINE 1: create table house.test(ceiling char(10),door char(10));
+                     ^
+db=# create table house.test(ceiling char(10),door char(20));
+ERROR:  schema "house" does not exist
+LINE 1: create table house.test(ceiling char(10),door char(20));
+                     ^
+db=# create table home.test(ceiling char(10),door char(10));
+CREATE TABLE
+db=# select * from home.test;
+ ceiling | door
+---------+------
+(0 rows)
+
+
+db=# \d home.test
+                    Table "home.test"
+ Column  |     Type      | Collation | Nullable | Default
+---------+---------------+-----------+----------+---------
+ ceiling | character(10) |           |          |
+ door    | character(10) |           |          |

@@ -1,0 +1,134 @@
+C:\Users\hp>psql -U postgres -h localhost
+Password for user :
+psql (12.3)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# create database files;
+CREATE DATABASE
+postgres=# \l
+
+Name    |  Owner   | Encoding |      Collate       |       Ctype        |   Access privileges
+-----------+----------+----------+--------------------+--------------------+-----------------------
+ Staffs    | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ db        | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ postgres  | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ template0 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+ template1 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+(5 rows)
+
+postgres=# create user Person with password 'design';
+CRREATE ROLE
+postgres=# \c files;
+You are now connected to database "files" as user "postgres" .
+files=#
+files=#
+files=#
+files=#
+files=#
+
+
+------logical replication--------
+
+files=# CREATE TABLE tab (id int , name varchar(50) , role varchar(50) , Salary bigint);
+CREATE TABLE
+files=# INSERT INTO tab VALUES ('1' , 'kowshick' , 'Software engineer' , '25000');
+files=# INSERT INTO tab VALUES ('2' , 'karhick' , 'Software tester' , '25000');
+files=# INSERT INTO tab VALUES ('3' , 'kishore' , 'Data Engineer' , '22000'));
+INSERT 3 3
+files=# select * from tab
+id  |  name  | role |    Salary       |
+-----------+----------+----------+-------------------
+301   | kowshick | Software engineer  |25000
+302   | karthick | Software tester     |25000 
+303   | kishore  | Data Engineer       |22000 
+
+(4 rows)
+
+
+
+-------Publication-------
+files=# CREATE PUBLICATION testing FOR ALL TABLES;
+CREATE PUBLICATION
+
+
+
+------Creating another database-----
+postgres=# create database test;
+CREATE DATABASE
+postgres=# \l
+
+Name    |  Owner   | Encoding |      Collate       |       Ctype        |   Access privileges
+-----------+----------+----------+--------------------+--------------------+-----------------------
+ Staffs    | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ db        | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ postgres  | postgres | UTF8     | English_India.1252 | English_India.1252 |
+ template0 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+ template1 | postgres | UTF8     | English_India.1252 | English_India.1252 | =c/postgres          +
+           |          |          |                    |                    | postgres=CTc/postgres
+(5 rows)
+
+test=# CREATE TABLE tab (id int , name varchar(50) , role varchar(50) , Salary bigint);
+CREATE TABLE
+test=# INSERT INTO tab VALUES ('1' , 'kowshick' , 'Software engineer' , '25000');
+test=# INSERT INTO tab VALUES ('2' , 'karhick' , 'Software tester' , '25000');
+test=# INSERT INTO tab VALUES ('3' , 'kishore' , 'Data Engineer' , '22000'));
+INSERT 3 3
+test=# select * from tab;
+id  |  name  | role |    Salary       |
+-----------+----------+----------+-------------------
+301   | kowshick |  Software engineer  |25000
+302   | karthick | Software tester     |25000 
+303   | kishore  | Data Engineer       |22000 
+
+(4 rows)
+
+test=# CREATE SUBSCRIPTION designing CONNECTION 'user=repuser password=reppass host=127.0.0.1 port=5432 dbname=src' PUBLICATION test;
+NOTICE:  created replication slot "designing" on publisher
+CREATE SUBSCRIPTION
+
+test=# select * from tab;
+id  |  name  | role |    Salary       |
+-----------+----------+----------+-------------------
+301   | kowshick |  Software engineer  |25000
+302   | karthick | Software tester     |25000 
+303   | kishore  | Data Engineer       |22000 
+
+(4 rows)
+-----------Add Columns--------
+
+files=# ALTER TABLE tab ADD clr int;
+ALTER TABLE
+files=# INSERT INTO tab VALUES (1,100,1000);
+files=# INSERT INTO tab VALUES (2,200,2000);
+files=# INSERT INTO tab VALUES (3,300,3000);
+INSERT 3 3
+
+test=# select * from tab;
+id  |  name  | role |    Salary       |
+-----------+----------+----------+-------------------
+301   | kowshick |  Software engineer  |25000
+302   | karthick | Software tester     |25000 
+303   | kishore  | Data Engineer       |22000 
+
+(4 rows)
+ id   |  name     | role               |     Salary | tab    |
+-----------+----------+----------+----------------------------
+301   | kowshick |  Software engineer  |25000       |        |
+302   | karthick | Software tester     |25000       |        |
+303   | kishore  | Data Engineer       |22000       |        |
+3     | 300      |3000                 |-3          |-30     |
+
+(4 rows)
+
+
+
+
+
+
+
