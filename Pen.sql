@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS dbo."Pen"
        "HostName"                VARCHAR(256)  NULL,
        "ActionTime"              TIMESTAMP     NULL,
 	
-	    CONSTRAINT "PK_Pen" PRIMARY KEY
+        CONSTRAINT "PK_Pen" PRIMARY KEY
 	    (
 	       "AuditSequenceNo"
 	    )
@@ -25,6 +25,6 @@ CREATE TABLE IF NOT EXISTS dbo."Pen"
 CREATE UNIQUE INDEX IF NOT EXISTS "INDEX IX_Pen_NC01" 
 ON dbo."Pen"
            (
-              "AuditId" ASC NULLS FIRST
+               "AuditId" ASC NULLS FIRST
            );
 
