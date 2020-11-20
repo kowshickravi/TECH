@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS dbo."Pen"
 );
 CREATE UNIQUE INDEX IF NOT EXISTS "INDEX IX_Pen_NC01" 
 ON dbo."Pen"
-        (
-           "AuditId" ASC NULLS FIRST
-        );
+           (
+              "AuditId" ASC NULLS FIRST
+           );
 
